@@ -11,11 +11,12 @@ class MultipleWaysToCreatRddDf(spark:SparkSession) {
   def creatingdf() = {
     //Create Schema using StructType & StructField
 
-    val simpleData = Seq(Row("James", "", "Smith", "36636", "M", 3000),
-      Row("Michael", "Rose", "", "40288", "M", 4000),
-      Row("Robert", "", "Williams", "42114", "M", 4000),
-      Row("Maria", "Anne", "Jones", "39192", "F", 4000),
-      Row("Jen", "Mary", "Brown", "", "F", -1)
+    val simpleData = Seq(
+      Row("Omkar", "", "Nanaware", "36636", "M", 3000),
+      Row("Rohan", "Nanaware", "", "40288", "M", 4000),
+      Row("Rina", "", "Pawar", "42114", "M", 4000),
+      Row("Vinay", "Vijay", "Pawar", "39192", "F", 4000),
+      Row("Vijay", "Anant", "Pawar", "", "F", -1)
     )
 
     val simpleSchema = StructType(Array(
@@ -38,11 +39,11 @@ class MultipleWaysToCreatRddDf(spark:SparkSession) {
     //Create Nested struct Schema
 
     val structureData = Seq(
-      Row(Row("James", "", "Smith"), "36636", "M", 3100),
-      Row(Row("Michael", "Rose", ""), "40288", "M", 4300),
-      Row(Row("Robert", "", "Williams"), "42114", "M", 1400),
-      Row(Row("Maria", "Anne", "Jones"), "39192", "F", 5500),
-      Row(Row("Jen", "Mary", "Brown"), "", "F", -1)
+      Row(Row("Omkar", "", "Nanaware"), "36636", "M", 3100),
+      Row(Row("Rohan", "Vijay", ""), "40288", "M", 4300),
+      Row(Row("Rina", "", "Pawar"), "42114", "M", 1400),
+      Row(Row("Vinay", "Vijay", "Pawar"), "39192", "F", 5500),
+      Row(Row("Vijay", "Anant", "Pawar"), "", "F", -1)
     )
 
     val structureSchema = new StructType()
@@ -125,11 +126,11 @@ class MultipleWaysToCreatRddDf(spark:SparkSession) {
 //Using Arrays & Map Columns
 
   val arrayStructureData = Seq(
-    Row(Row("James", "", "Smith"), List("Cricket", "Movies"), Map("hair" -> "black", "eye" -> "brown")),
-    Row(Row("Michael", "Rose", ""), List("Tennis"), Map("hair" -> "brown", "eye" -> "black")),
-    Row(Row("Robert", "", "Williams"), List("Cooking", "Football"), Map("hair" -> "red", "eye" -> "gray")),
-    Row(Row("Maria", "Anne", "Jones"), null, Map("hair" -> "blond", "eye" -> "red")),
-    Row(Row("Jen", "Mary", "Brown"), List("Blogging"), Map("white" -> "black", "eye" -> "black"))
+    Row(Row("Omkar", "", "Nanaware"), List("Cricket", "Movies"), Map("hair" -> "black", "eye" -> "brown")),
+    Row(Row("Rohan", "Nanaware", ""), List("Tennis"), Map("hair" -> "brown", "eye" -> "black")),
+    Row(Row("Rina", "", "Pawar"), List("Cooking", "Football"), Map("hair" -> "red", "eye" -> "gray")),
+    Row(Row("Vinay", "Vijay", "Pawar"), null, Map("hair" -> "blond", "eye" -> "red")),
+    Row(Row("Vijay", "Anant", "Pawar"), List("Blogging"), Map("white" -> "black", "eye" -> "black"))
   )
 
   val arrayStructureSchema = new StructType()
