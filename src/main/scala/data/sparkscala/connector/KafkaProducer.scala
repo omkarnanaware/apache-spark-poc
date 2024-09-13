@@ -19,10 +19,9 @@ object KafkaProducer {
     //Topic Config
     val topic = "text_topic"
 
+    val producer = producerCreation(props, topic)
 
     try {
-
-      val producer = producerCreation(props, topic)
 
       for (i <- Range(0, 15)) {
 
@@ -34,7 +33,8 @@ object KafkaProducer {
           record.key(), record.value(), metadata.get().partition(),
           metadata.get().offset())
       }
-      catch
+
+    }catch
       {
         case e: Exception => e.printStackTrace()
       }
@@ -44,7 +44,7 @@ object KafkaProducer {
       }
     }
 
-  }
+
 
   def producerCreation(props: java.util.Properties, topic: String): KafkaProducer[String, String] = {
 
@@ -54,4 +54,5 @@ object KafkaProducer {
     producer
 
   }
+}
 

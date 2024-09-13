@@ -10,7 +10,7 @@ import java.util.Properties
 import scala.collection.JavaConverters._
 object KafkaConsumer {
 
-  def main(args:Array[String]):Unit = {
+  def main(args: Array[String]): Unit = {
 
     {
 
@@ -42,3 +42,4 @@ object KafkaConsumer {
     }
 
   }
+}
