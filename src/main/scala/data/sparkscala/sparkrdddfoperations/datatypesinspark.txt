@@ -1,0 +1,86 @@
++---------------------+----------------------+-----------------------+
+|   Spark Data Type    |   Scala Data Type    |   Python Data Type    |
++---------------------+----------------------+-----------------------+
+|    StringType        |       String         |         str           |
+|    IntegerType       |        Int           |         int           |
+|    LongType          |        Long          |    int (or long in    |
+|                     |                      |   Python 2)           |
+|    FloatType         |       Float          |        float          |
+|    DoubleType        |      Double          |        float          |
+|    BooleanType       |     Boolean          |        bool           |
+|    DateType          |   java.sql.Date      |  datetime.date        |
+|    TimestampType     | java.sql.Timestamp   | datetime.datetime     |
+|    ArrayType         |      Array[T]        |        list           |
+|    MapType           |      Map[K, V]       |        dict           |
+|    StructType        |      case class      | dict (with pyspark    |
+|                     |                      | .sql.Row for struct)  |
++---------------------+----------------------+-----------------------+
+
+
+Data Type Explanations
+StringType:
+
+Spark: Represents a string.
+Scala: String
+Python: str
+Example: "Hello, World!"
+IntegerType:
+
+Spark: Represents a 32-bit integer.
+Scala: Int
+Python: int
+Example: 42
+LongType:
+
+Spark: Represents a 64-bit long integer.
+Scala: Long
+Python: int (or long in Python 2)
+Example: 1234567890123456789L (in Scala) or 1234567890123456789 (in Python 3)
+FloatType:
+
+Spark: Represents a single-precision floating-point number.
+Scala: Float
+Python: float
+Example: 3.14f (in Scala) or 3.14 (in Python)
+DoubleType:
+
+Spark: Represents a double-precision floating-point number.
+Scala: Double
+Python: float
+Example: 3.14159265358979
+BooleanType:
+
+Spark: Represents a boolean value.
+Scala: Boolean
+Python: bool
+Example: true (Scala) or True (Python)
+DateType:
+
+Spark: Represents a date without a time component.
+Scala: java.sql.Date
+Python: datetime.date
+Example: 2024-09-11
+TimestampType:
+
+Spark: Represents a timestamp with date and time.
+Scala: java.sql.Timestamp
+Python: datetime.datetime
+Example: 2024-09-11 15:30:00
+ArrayType:
+
+Spark: Represents an array of elements.
+Scala: Array[T]
+Python: list
+Example: [1, 2, 3] (Python) or Array(1, 2, 3) (Scala)
+MapType:
+
+Spark: Represents a map of key-value pairs.
+Scala: Map[K, V]
+Python: dict
+Example: {"key1": "value1", "key2": "value2"}
+StructType:
+
+Spark: Represents a complex type with multiple fields.
+Scala: case class (e.g., case class Person(name: String, age: Int))
+Python: dict (with pyspark.sql.Row for structured data)
+Example: Row(name="Alice", age=30)

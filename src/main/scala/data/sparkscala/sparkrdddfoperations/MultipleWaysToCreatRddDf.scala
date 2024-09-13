@@ -1,4 +1,4 @@
-package data.sparkscala.sparkrdddf
+package data.sparkscala.sparkrdddfoperations
 
 import org.apache.spark.sql.types.{ArrayType, DataType, IntegerType, MapType, StringType, StructField, StructType}
 import org.apache.spark.sql.{DataFrame, Encoders, Row, SparkSession}

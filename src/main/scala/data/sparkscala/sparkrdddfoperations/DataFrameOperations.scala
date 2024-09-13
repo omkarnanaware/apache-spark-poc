@@ -1,4 +1,4 @@
-package data.sparkscala.sparkrdddf
+package data.sparkscala.sparkrdddfoperations
 
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.sql.functions._

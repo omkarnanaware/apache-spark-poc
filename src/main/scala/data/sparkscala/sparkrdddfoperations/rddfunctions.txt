@@ -1,0 +1,213 @@
+
+1. Creating RDDs
+From Collection
+
+
+
+
+val data = List(1, 2, 3, 4, 5)
+val rddFromCollection: RDD[Int] = sc.parallelize(data)
+Function: parallelize(data) creates an RDD from an existing Scala collection (data in this case). This is useful for small datasets or testing.
+Details: The parallelize method distributes the collection’s elements across the cluster and allows parallel processing.
+From File
+
+
+
+
+val rddFromFile: RDD[String] = sc.textFile("path/to/textfile.txt")
+Function: textFile("path/to/textfile.txt") reads a text file and creates an RDD from its lines.
+Details: The file is split into chunks, each read in parallel by different nodes in the cluster.
+2. Transformations
+Map
+
+
+
+
+val mappedRDD = rdd.map { case (name, score) => (name, score * 2) }
+Function: map(f) applies function f to each element of the RDD.
+Details: Transforms each element of the RDD into a new element according to the function f. It returns a new RDD with the results.
+Filter
+
+
+
+
+val filteredRDD = rdd.filter { case (name, score) => score > 2 }
+Function: filter(p) applies predicate p to each element and keeps only those that satisfy the predicate.
+Details: It filters out elements that don’t match the condition, creating a new RDD with the elements that do.
+FlatMap
+
+
+
+
+val flatMappedRDD = rdd.flatMap { case (name, score) => Seq(name, score.toString) }
+Function: flatMap(f) applies function f to each element and flattens the result.
+Details: Unlike map, which produces one output for each input, flatMap can produce multiple outputs (or none) for each input.
+ReduceByKey
+
+
+
+
+val reducedRDD = rdd.reduceByKey(_ + _)
+Function: reduceByKey(f) combines values with the same key using a reduce function f.
+Details: Aggregates data with the same key by applying the function f (e.g., summing up values) and returns an RDD of key-value pairs.
+GroupByKey
+
+
+
+
+val groupedRDD = rdd.groupByKey()
+Function: groupByKey() groups values by key.
+Details: Collects all values for each key into a single iterable, which can be useful for operations that need to process all values associated with a key together.
+Join
+
+
+
+
+val joinedRDD = rdd.join(rdd2)
+Function: join(otherRDD) joins two RDDs based on keys.
+Details: Produces an RDD of key-value pairs where each key is associated with a tuple of values from the two RDDs.
+Cogroup
+
+
+
+
+val cogroupedRDD = rdd.cogroup(rdd2)
+Function: cogroup(otherRDD) groups pairs of RDDs by key.
+Details: Produces an RDD of key-value pairs where each key is associated with a tuple of two collections (one from each RDD).
+SortBy
+
+
+
+
+val sortedRDD = rdd.sortBy { case (name, score) => score }
+Function: sortBy(f) sorts elements based on a key extracted by function f.
+Details: Returns an RDD sorted by the values specified by f. Can sort in ascending or descending order depending on the ordering specified.
+ZipWithIndex
+
+
+
+
+val rddWithIndex = rdd.zipWithIndex()
+Function: zipWithIndex() adds an index to each element.
+Details: Each element of the RDD is paired with its index, creating an RDD of tuples where the first element is from the original RDD and the second is the index.
+3. Actions
+Collect
+
+
+
+
+val collected = rdd.collect()
+Function: collect() retrieves all elements of the RDD to the driver program.
+Details: Useful for debugging or small datasets. Be cautious with large datasets as this can lead to out-of-memory errors.
+Count
+
+
+
+
+val count = rdd.count()
+Function: count() returns the number of elements in the RDD.
+Details: A basic action to get the size of the dataset.
+First
+
+
+
+
+val first = rdd.first()
+Function: first() returns the first element of the RDD.
+Details: Useful for quick inspection of the first element in a large RDD.
+Take
+
+
+
+
+val taken = rdd.take(3)
+Function: take(n) returns the first n elements of the RDD.
+Details: Provides a way to view a subset of elements without collecting the entire RDD.
+TakeOrdered
+
+
+
+
+val takeOrderedRDD = rdd.takeOrdered(3)(Ordering[Int].reverse.on(_._2))
+Function: takeOrdered(n)(o) returns the first n elements, ordered by the given ordering o.
+Details: Allows fetching the top n elements based on custom ordering.
+SaveAsTextFile
+
+
+
+
+rdd.saveAsTextFile("path/to/output.txt")
+Function: saveAsTextFile(path) writes the RDD to a text file in the specified path.
+Details: Useful for saving output to persistent storage. Each partition is written to a separate file.
+Sample
+
+
+
+
+val sampledRDD = rdd.sample(withReplacement = false, fraction = 0.5)
+Function: sample(withReplacement, fraction) samples a fraction of the RDD elements, with or without replacement.
+Details: Useful for creating subsets of data. fraction specifies the proportion of elements to include.
+Distinct
+
+
+
+
+val distinctRDD = rdd.distinct()
+Function: distinct() removes duplicate elements.
+Details: Produces an RDD containing only unique elements.
+Union
+
+
+
+
+val unionRDD = rdd.union(sc.parallelize(List(("Eve", 6))))
+Function: union(otherRDD) combines elements from two RDDs.
+Details: Produces a new RDD containing all elements from both RDDs.
+Intersection
+
+
+
+
+val intersectionRDD = rdd.intersection(rdd3)
+Function: intersection(otherRDD) returns elements common to both RDDs.
+Details: Produces an RDD containing only the elements present in both RDDs.
+Subtract
+
+
+
+
+val subtractRDD = rdd.subtract(rdd3)
+Function: subtract(otherRDD) returns elements of the RDD that are not in another RDD.
+Details: Produces an RDD of elements that are in the first RDD but not in the second.
+Coalesce
+
+
+
+
+val coalescedRDD = rdd.coalesce(1)
+Function: coalesce(numPartitions) reduces the number of partitions in the RDD.
+Details: Useful for decreasing the number of partitions for better performance. Usually involves reshuffling.
+Repartition
+
+
+
+
+val repartitionedRDD = rdd.repartition(4)
+Function: repartition(numPartitions) increases or decreases the number of partitions.
+Details: Useful for optimizing the parallelism of the RDD. Unlike coalesce, it involves reshuffling data.
+Cache
+
+
+
+
+rdd.cache().count() // Trigger caching
+Function: cache() stores the RDD in memory for faster access.
+Details: Useful for iterative algorithms that reuse the RDD multiple times. You must trigger an action (like count()) to cache the RDD.
+Unpersist
+
+
+
+
+rdd.unpersist()
+Function: unpersist() removes the RDD from memory.
+Details: Frees up memory once the RDD is no longer needed.

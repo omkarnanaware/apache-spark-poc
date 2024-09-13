@@ -1,0 +1,232 @@
+
+1. Creating DataFrames
+From Collection
+
+
+
+
+val data = Seq(("Alice", 25), ("Bob", 30), ("Charlie", 35))
+val df = spark.createDataFrame(data).toDF("name", "age")
+Function: createDataFrame(data)
+Input: Takes a Scala collection (Seq, List, etc.) as input.
+Details: Converts the collection into a DataFrame with optional column names using .toDF().
+From Case Class
+
+
+
+
+case class Person(name: String, age: Int)
+val data = Seq(Person("Alice", 25), Person("Bob", 30))
+val df = spark.createDataFrame(data)
+Function: createDataFrame(data)
+Input: A Scala sequence of case class instances.
+Details: Spark automatically infers the schema based on the case class fields.
+From File
+
+
+
+
+val df = spark.read.option("header", "true").csv("path/to/file.csv")
+Function: read.csv(path)
+Input: File path.
+Details: Reads a CSV file into a DataFrame. The .option("header", "true") reads the first row as column headers.
+2. DataFrame Transformations
+select
+
+
+
+
+val df2 = df.select("name", "age")
+Function: select(columns: String*)
+Input: One or more column names as strings.
+Details: Selects the specified columns from the DataFrame. This is a projection operation and does not modify the data.
+filter
+
+
+
+
+val df2 = df.filter("age > 25")
+Function: filter(condition: String)
+Input: A SQL-like string or a column expression that defines the condition.
+Details: Returns rows that satisfy the condition. The condition can be provided as a string or a Column expression.
+where
+
+
+
+
+val df2 = df.where(col("age") > 25)
+Function: where(condition: Column)
+Input: Column condition or string-based SQL expression.
+Details: An alias for filter. Accepts both column expressions and SQL string conditions.
+groupBy
+
+
+
+
+val df2 = df.groupBy("age").count()
+Function: groupBy(columns: String*)
+Input: One or more column names.
+Details: Groups the DataFrame by specified columns and allows for aggregations such as count, sum, avg, etc.
+agg
+
+
+
+
+val df2 = df.groupBy("age").agg(avg("salary"), max("salary"))
+Function: agg(aggregateFunction: Column*)
+Input: One or more aggregation functions.
+Details: Used for performing aggregation after groupBy(). Supports functions like sum(), avg(), min(), max(), and count().
+join
+
+
+
+
+val joinedDF = df1.join(df2, df1("id") === df2("id"), "inner")
+Function: join(right: DataFrame, condition: Column, joinType: String)
+Input: Right DataFrame, join condition, join type (e.g., "inner", "left", "right", "outer").
+Details: Joins two DataFrames based on a condition. The join type specifies how to handle rows that do not match in both DataFrames.
+withColumn
+
+
+
+
+val df2 = df.withColumn("age_plus_10", col("age") + 10)
+Function: withColumn(columnName: String, column: Column)
+Input: The new column name and the column expression.
+Details: Adds a new column to the DataFrame. The column can be derived from existing columns by applying expressions.
+withColumnRenamed
+
+
+
+
+val df2 = df.withColumnRenamed("age", "years")
+Function: withColumnRenamed(existingName: String, newName: String)
+Input: Existing column name and new column name.
+Details: Renames a column without changing its data.
+drop
+
+
+
+
+val df2 = df.drop("age")
+Function: drop(columns: String*)
+Input: One or more column names.
+Details: Removes specified columns from the DataFrame.
+distinct
+
+
+
+
+val df2 = df.distinct()
+Function: distinct()
+Input: No input.
+Details: Removes duplicate rows from the DataFrame, returning only distinct records.
+orderBy
+
+
+
+
+val df2 = df.orderBy("age")
+Function: orderBy(columns: String*)
+Input: One or more column names.
+Details: Sorts the DataFrame based on the specified columns in ascending order. Use .desc for descending order.
+limit
+
+
+
+
+val df2 = df.limit(10)
+Function: limit(n: Int)
+Input: An integer specifying the number of rows.
+Details: Returns only the first n rows of the DataFrame.
+union
+
+
+
+
+val df2 = df1.union(df2)
+Function: union(other: DataFrame)
+Input: Another DataFrame with the same schema.
+Details: Combines two DataFrames with the same schema into one, by appending the rows of the second DataFrame.
+3. DataFrame Actions
+show
+
+
+
+
+df.show(5)
+Function: show(n: Int)
+Input: An integer specifying the number of rows to display.
+Details: Displays the first n rows of the DataFrame in a tabular format.
+collect
+
+
+
+
+val rows: Array[Row] = df.collect()
+Function: collect()
+Input: No input.
+Details: Returns all the rows of the DataFrame as an array of Row objects. Avoid using on large datasets to prevent memory overload.
+count
+
+
+
+
+val rowCount = df.count()
+Function: count()
+Input: No input.
+Details: Returns the total number of rows in the DataFrame.
+take
+
+
+
+
+val rows = df.take(3)
+Function: take(n: Int)
+Input: The number of rows to retrieve.
+Details: Returns the first n rows as an array of Row objects.
+first
+
+
+
+
+val firstRow = df.first()
+Function: first()
+Input: No input.
+Details: Returns the first row of the DataFrame.
+head
+
+
+
+
+val headRows = df.head(2)
+Function: head(n: Int)
+Input: The number of rows to return.
+Details: Returns the first n rows. Similar to take, but returns a Seq instead of an array.
+describe
+
+
+
+
+df.describe("age").show()
+Function: describe(columns: String*)
+Input: One or more column names.
+Details: Computes basic statistics (mean, standard deviation, min, max) for numeric columns.
+persist/cache
+
+
+
+
+df.cache()
+Function: cache()
+Input: No input.
+Details: Caches the DataFrame in memory, so it can be reused across multiple actions without recomputation.
+unpersist
+
+
+
+
+df.unpersist()
+Function: unpersist()
+Input: No input.
+Details: Removes the DataFrame from memory if it was previously cached or persisted.
