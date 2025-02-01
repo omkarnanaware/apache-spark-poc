@@ -1,9 +1,48 @@
 package data.sparkscala.utils
 
+import org.apache.kafka.clients.consumer.ConsumerRecord
+import org.apache.spark.sql.Row
 import org.apache.spark.sql.types.{DataType, DataTypes, StructField, StructType}
+import org.codehaus.jettison.json.JSONArray
+
+import scala.collection.mutable.ArrayBuffer
 
 class ScalaUtils {
 
+
+  def kafkaJsonFlattener(x: ConsumerRecord[String,String]):Array[Row] = {
+
+    val flattened:Array[String] = jsonArrayFlattener(x.value())
+    val list:ArrayBuffer[Row] = new ArrayBuffer[Row]();
+    if(flattened.length > 0) {
+      for(json <- flattened) {
+        list.append(Row(x.topic(),x.partition(),x.offset(),x.key(),json,x.timestamp()))
+
+      }
+    }else{
+        list.append(Row(x.topic(),x.partition(),x.offset(),x.key(),x.value()))
+      }
+    list.toArray
+    }
+
+  def jsonArrayFlattener(jsonString: String):Array[String] = {
+
+    val list: ArrayBuffer[String] = new ArrayBuffer[String]();
+
+    try{
+      val jsonArray : JSONArray = new JSONArray(jsonString);
+
+      if(jsonArray != null){
+        val len = jsonArray.length();
+        for(i <-0 to len-1){
+          list.append(jsonArray.get(i).toString());
+        }
+      }
+    } catch {
+      case ex:Exception =>
+    }
+    list.toArray
+  }
 
 
 

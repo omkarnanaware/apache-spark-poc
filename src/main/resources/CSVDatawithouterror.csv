@@ -1,0 +1,10 @@
+Column1,Column2
+valid1,123
+validnull,
+invalid1,none
+valid2,123
+validnull,
+invalid2,none
+valid3,123
+validnull,
+invalid3,none

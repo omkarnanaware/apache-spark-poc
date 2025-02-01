@@ -16,13 +16,13 @@ object KafkaConsumer {
 
       val props: Properties = new Properties()
       props.put("group.id", "test")
-      props.put("bootstrap.servers", "192.168.1.128:9092")
+      props.put("bootstrap.servers", "192.168.56.104:9092")
       props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer")
       props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer")
       props.put("enable.auto.commit", "true")
       props.put("auto.commit.interval.ms", "1000")
       val consumer = new KafkaConsumer(props)
-      val topics = List("topic_text")
+      val topics = List("test-topic")
       try {
         consumer.subscribe(topics.asJava)
         //consumer.subscribe(Collections.singletonList("topic_partition"))

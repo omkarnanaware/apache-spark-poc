@@ -5,6 +5,9 @@ import org.apache.spark.{SparkConf, SparkContext}
 
 class  SparkEnvConfig {
 
+
+  System.setProperty("hadoop.home.dir", "C:\\hadoop\\")
+
   def sparkConfig():org.apache.spark.SparkConf = {
 
     val conf = new org.apache.spark.SparkConf()
@@ -13,6 +16,9 @@ class  SparkEnvConfig {
     conf.setMaster("local[*]")
     conf.set("spark.testing.memory", "2147480000")
     conf.set("spark.driver.host", "localhost")
+    conf.set("spark.driver.memory","1g")
+
+
 
     conf
   }

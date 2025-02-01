@@ -25,9 +25,9 @@ class RddOperations(sc: SparkContext) {
     rddFromCollection.collect().foreach(println)
 
     // 2. Create RDD from a text file
-    val rddFromFile: RDD[String] = sc.textFile("path/to/textfile.txt")
-    println("RDD created from text file:")
-    rddFromFile.take(10).foreach(println)
+//    val rddFromFile: RDD[String] = sc.textFile("path/to/textfile.txt")
+//    println("RDD created from text file:")
+//    rddFromFile.take(10).foreach(println)
   }
 
   /**
